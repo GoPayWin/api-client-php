@@ -1,0 +1,31 @@
+{
+  "name": "ziftr/api-client",
+  "description": "Ziftr API PHP Client Bindings",
+  "keywords": [
+    "ziftr",
+    "ziftrpay",
+    "ecommerce",
+    "shopping",
+    "cryptocurrency",
+    "wallet",
+    "products",
+    "purchasing",
+    "api"
+  ],
+  "homepage": "http://www.ziftr.com/",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ziftr and contributors",
+      "homepage": "https://github.com/ziftr/fpa-php/contributors"
+    }
+  ],
+  "require": {
+    "php": ">=5.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ziftr\\": "lib"
+    }
+  }
+}
