@@ -1,8 +1,8 @@
 <?php
 
-namespace Ziftr\FPA;
+namespace Ziftr\ApiClient;
 
-class ApiRequest
+class Request
 {
 
   const API_VERSION = '0.1';

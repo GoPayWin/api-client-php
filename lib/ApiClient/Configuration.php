@@ -1,6 +1,6 @@
 <?php
 
-namespace Ziftr\FPA;
+namespace Ziftr\ApiClient;
 
 class Configuration
 {
