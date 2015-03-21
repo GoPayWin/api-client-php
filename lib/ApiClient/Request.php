@@ -11,6 +11,8 @@ class Request
   private $_path;
   private $_Configuration;
   private $_secure;
+  private $_headers;
+  private $_body;
 
   public function __construct($path, $configuration, $secure=true) {
     $this->_path = $path;
@@ -18,7 +20,24 @@ class Request
     $this->_secure = $secure;
   }
 
-  public function get_signature() {
+  protected function _getSignature($privateKey, $publicKey, $qs='') {
+
+    // Calculate text to sign
+
+    $timestamp = dechex(time());
+
+    $text_to_sign  = '';
+    //$text_to_sign .= $method;
+    $text_to_sign .= $timestamp;
+    $text_to_sign .= $publicKey;
+    $text_to_sign .= $this->_path;
+    $text_to_sign .= $qs;
+
+    $hashKey       = hash('sha256',$privateKey);
+
+    // Sign the text
+
+    return $timestamp . '/' . hash_hmac('sha256', $text_to_sign, $hashKey);
    
   }
 
@@ -47,36 +66,15 @@ class Request
 
     // Get the signing key
 
-    $pkey = $this->_Configuration->read('publishable_key');
-    $skey = $this->_Configuration->read('private_key');
-
-    // Get timestamp
-
-    $timestamp = dechex(time());
-
-    // Get query string
-
-    $qs = '';
-
-    // Calculate text to sign
-
-    $text_to_sign  = '';
-    //$text_to_sign .= $method;
-    $text_to_sign .= $timestamp;
-    $text_to_sign .= $pkey;
-    $text_to_sign .= $this->_path;
-    $text_to_sign .= $qs;
-
-    $hashKey = hash('sha256',$skey);
-
-    // Sign the text
-
-    $signature = $timestamp . '/' . hash_hmac('sha256', $text_to_sign, $hashKey);
+    $pubkey = $this->_Configuration->read('publishable_key');
+    $prvkey = $this->_Configuration->read('private_key');
 
     // Set the headers
 
+    $signature = $this->_getSignature($prvkey,$pubkey);
+
     $headers = array(
-      'Authorization: Basic '. base64_encode($pkey.':'.$signature),
+      'Authorization: Basic '. base64_encode($pubkey.':'.$signature),
       'Accept: application/vnd.ziftr.fpa-' . $acceptVersion . '+json',
       'User-Agent: Ziftr%20API%20PHP%20Client%20' . self::CLIENT_VERSION
     );
@@ -85,16 +83,34 @@ class Request
 
     // Make the request
 
+    $response       = curl_exec($ch);
 
-    $response = curl_exec($ch);
+    $header_size    = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+    $code           = curl_getinfo($ch,CURLINFO_HTTP_CODE);
 
-    $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-    $code        = curl_getinfo($ch,CURLINFO_HTTP_CODE);
+    $this->_headers = substr($response, 0, $header_size);
+    $this->_body    = json_decode(substr($response, $header_size));
 
-    $header = substr($response, 0, $header_size);
-    $body   = json_decode(substr($response, $header_size));
 
-    return $body;
+    switch ( $code ) {
+    case 400: throw new         Exceptions\BadRequestException($this->_Configuration);
+    case 401: throw new      Exceptions\AuthorizationException($this->_Configuration);
+    case 403: throw new          Exceptions\ForbiddenException($this->_Configuration);
+    case 404: throw new           Exceptions\NotFoundException($this->_Configuration);
+    case 405: throw new   Exceptions\MethodNotAllowedException($this->_Configuration);
+    case 406: throw new      Exceptions\NotAcceptableException($this->_Configuration);
+    case 500: throw new     Exceptions\InternalServerException($this->_Configuration);
+    case 501: throw new     Exceptions\NotImplimentedException($this->_Configuration);
+    case 502: throw new         Exceptions\BadGatewayException($this->_Configuration);
+    case 503: throw new Exceptions\ServiceUnavailableException($this->_Configuration);
+    case 504: throw new     Exceptions\GatewayTimeoutException($this->_Configuration);
+    default:
+      if ( $code >= 400 ) {
+        throw new Exceptions\Base($this->_Configuration);
+      }
+    }
+
+    return $this->_body;
   }
 
   public function post( $data ) {
