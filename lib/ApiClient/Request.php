@@ -32,7 +32,6 @@ class Request
     $text_to_sign .= $publicKey;
     $text_to_sign .= $this->_path;
     $text_to_sign .= $qs;
-
     $hashKey       = hash('sha256',$privateKey);
 
     // Sign the text
@@ -76,10 +75,16 @@ class Request
     $headers = array(
       'Authorization: Basic '. base64_encode($pubkey.':'.$signature),
       'Accept: application/vnd.ziftr.fpa-' . $acceptVersion . '+json',
+      'Content-Type: application/json',
       'User-Agent: Ziftr%20API%20PHP%20Client%20' . self::CLIENT_VERSION
     );
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    if ( $method == 'POST' || $method == 'PATCH' || $method == 'PUT' ) {
+      curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+      $headers[] = 'Content-Type: application/json';
+    }
 
     // Make the request
 
@@ -90,7 +95,6 @@ class Request
 
     $this->_headers = substr($response, 0, $header_size);
     $this->_body    = json_decode(substr($response, $header_size));
-
 
     switch ( $code ) {
     case 400: throw new         Exceptions\BadRequestException($this->_Configuration);
