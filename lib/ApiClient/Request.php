@@ -58,10 +58,11 @@ class Request
 
     $url = $protocol . '://' . $host . $this->_path;
 
-    curl_setopt($ch, CURLOPT_URL,            $protocol . '://' . $host . $this->_path);
+    curl_setopt($ch, CURLOPT_URL,            $url);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST,  $method);
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 
     // Get the signing key
 
@@ -93,6 +94,7 @@ class Request
     $header_size    = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
     $code           = curl_getinfo($ch,CURLINFO_HTTP_CODE);
 
+
     $this->_headers = substr($response, 0, $header_size);
     $this->_body    = json_decode(substr($response, $header_size));
 
@@ -114,7 +116,7 @@ class Request
       }
     }
 
-    return $this->_body;
+    return $this;
   }
 
   public function post( $data ) {
@@ -135,6 +137,24 @@ class Request
 
   public function del() {
     return $this->_request('DELETE');
+  }
+
+  public function getResponse() {
+    return $this->_body;
+  }
+
+  public function linkRequest($linkRel) {
+    if ( $this->_body && is_array($this->_body->links) ) {
+
+      foreach ( $this->_body->links as $link ) {
+        if ( $link->rel == $linkRel ) {
+          return new Request($link->href, $this->_Configuration, $this->_secure);
+        }
+      }
+
+    }
+
+    return null;
   }
 
 }
