@@ -21,6 +21,7 @@ class Request
   }
 
   protected function _getSignature($privateKey, $publicKey, $qs='') {
+    if ( empty($privateKey) ) { return ''; }
 
     // Calculate text to sign
 
@@ -91,9 +92,14 @@ class Request
 
     $response       = curl_exec($ch);
 
+    $cerror          = curl_error($ch);
+
+    if ( !empty($cerror) ) {
+      throw new \Exception($cerror);
+    }
+
     $header_size    = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
     $code           = curl_getinfo($ch,CURLINFO_HTTP_CODE);
-
 
     $this->_headers = substr($response, 0, $header_size);
     $this->_body    = json_decode(substr($response, $header_size));
