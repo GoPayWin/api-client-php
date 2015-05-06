@@ -92,7 +92,7 @@ class Request
 
     $response       = curl_exec($ch);
 
-    $cerror          = curl_error($ch);
+    $cerror         = curl_error($ch);
 
     if ( !empty($cerror) ) {
       throw new \Exception($cerror);
@@ -149,18 +149,33 @@ class Request
     return $this->_body;
   }
 
-  public function linkRequest($linkRel) {
+  public function getLinks($linkRel, $limit=null) {
+    $links = array();
+
     if ( $this->_body && is_array($this->_body->links) ) {
 
       foreach ( $this->_body->links as $link ) {
         if ( $link->rel == $linkRel ) {
-          return new Request($link->href, $this->_Configuration, $this->_secure);
+          $links[] = $link->href;
+          if ( $limit && count($links) == $limit ) {
+            break;
+          }
         }
       }
-
     }
 
-    return null;
+    return $links;
+  }
+
+  public function linkRequest($linkRel) {
+    $links = $this->getLinks($linkRel, 1);
+
+    if ( count($links) == 1 ) {
+      return new Request($links[0], $this->_Configuration, $this->_secure);
+
+    } else {
+      return null;
+    }
   }
 
 }
