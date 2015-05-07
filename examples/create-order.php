@@ -24,7 +24,7 @@ $configuration->load_from_array(array(
  * Create a new order request.
  */
 
-$order = new \Ziftr\ApiClient\Request('/orders/', $configuration, false);
+$order = new \Ziftr\ApiClient\Request('/orders/', $configuration);
 
 try {
 
