@@ -5,7 +5,7 @@ namespace Ziftr\ApiClient\Exceptions;
 class ValidationException extends Base
 {
 
-  public function __construct(\Ziftr\ApiClient\Configuration $Configuration, $body, $message = "", $code = 400, \Exception $previous = NULL) {
+  public function __construct(\Ziftr\ApiClient\Configuration $Configuration, $body, $message = "", $code = 422, \Exception $previous = NULL) {
     parent::__construct($Configuration, $body, $message, $code, $previous);
   }
 
