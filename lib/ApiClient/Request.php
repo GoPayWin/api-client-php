@@ -105,17 +105,18 @@ class Request
     $this->_body    = json_decode(substr($response, $header_size));
 
     switch ( $code ) {
-    case 400: throw new         Exceptions\BadRequestException($this->_Configuration);
-    case 401: throw new      Exceptions\AuthorizationException($this->_Configuration);
-    case 403: throw new          Exceptions\ForbiddenException($this->_Configuration);
-    case 404: throw new           Exceptions\NotFoundException($this->_Configuration);
-    case 405: throw new   Exceptions\MethodNotAllowedException($this->_Configuration);
-    case 406: throw new      Exceptions\NotAcceptableException($this->_Configuration);
-    case 500: throw new     Exceptions\InternalServerException($this->_Configuration);
-    case 501: throw new     Exceptions\NotImplimentedException($this->_Configuration);
-    case 502: throw new         Exceptions\BadGatewayException($this->_Configuration);
-    case 503: throw new Exceptions\ServiceUnavailableException($this->_Configuration);
-    case 504: throw new     Exceptions\GatewayTimeoutException($this->_Configuration);
+    case 400: throw new         Exceptions\BadRequestException($this->_Configuration, $this->_body);
+    case 401: throw new      Exceptions\AuthorizationException($this->_Configuration, $this->_body);
+    case 403: throw new          Exceptions\ForbiddenException($this->_Configuration, $this->_body);
+    case 404: throw new           Exceptions\NotFoundException($this->_Configuration, $this->_body);
+    case 405: throw new   Exceptions\MethodNotAllowedException($this->_Configuration, $this->_body);
+    case 406: throw new      Exceptions\NotAcceptableException($this->_Configuration, $this->_body);
+    case 422: throw new         Exceptions\ValidationException($this->_Configuration, $this->_body);
+    case 500: throw new     Exceptions\InternalServerException($this->_Configuration, $this->_body);
+    case 501: throw new     Exceptions\NotImplimentedException($this->_Configuration, $this->_body);
+    case 502: throw new         Exceptions\BadGatewayException($this->_Configuration, $this->_body);
+    case 503: throw new Exceptions\ServiceUnavailableException($this->_Configuration, $this->_body);
+    case 504: throw new     Exceptions\GatewayTimeoutException($this->_Configuration, $this->_body);
     default:
       if ( $code >= 400 ) {
         throw new Exceptions\Base($this->_Configuration);
