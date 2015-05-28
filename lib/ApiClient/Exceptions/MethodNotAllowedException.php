@@ -2,7 +2,7 @@
 
 namespace Ziftr\ApiClient\Exceptions;
 
-class InternalServerException extends Base
+class MethodNotAllowedException extends Base
 {
 
   public function __construct(\Ziftr\ApiClient\Configuration $Configuration, $body, $message = "", $code = 500, \Exception $previous = NULL) {
