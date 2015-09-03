@@ -14,10 +14,9 @@ class Request
   private $_headers;
   private $_body;
 
-  public function __construct($path, $configuration, $secure=true) {
+  public function __construct($path, $configuration) {
     $this->_path = $path;
     $this->_Configuration = $configuration;
-    $this->_secure = $secure;
   }
 
   protected function _getSignature($privateKey, $publicKey, $qs='') {
@@ -38,7 +37,7 @@ class Request
     // Sign the text
 
     return $timestamp . '/' . hash_hmac('sha256', $text_to_sign, $hashKey);
-   
+
   }
 
   private function _request( $method, $data=null ) {
@@ -54,6 +53,7 @@ class Request
 
     $port = $this->_Configuration->read('port');
     $host = $this->_Configuration->read('host') . ':' . $port;
+    $secure = $this->_Configuration->read('secure');
 
     $protocol = $this->_secure ? 'https' : 'http';
 

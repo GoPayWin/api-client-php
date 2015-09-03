@@ -16,6 +16,7 @@ $configuration = new \Ziftr\ApiClient\Configuration();
 $configuration->load_from_array(array(
   'host' => 'sandbox.fpa.bz',
   'port' => 443,
+  'secure' => true,
   'private_key' => '...',
   'publishable_key' => '...'
 ));
@@ -44,7 +45,7 @@ try {
 
   print_r($order->getResponse());
 
-  
+
   /*
    * Create a new request object for the items endpoint.
    * This method is preffered to creating a URL directly.

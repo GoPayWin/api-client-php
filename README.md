@@ -31,6 +31,7 @@ $configuration = new \Ziftr\ApiClient\Configuration();
 $configuration->load_from_array(array(
   'host' => 'sandbox.fpa.bz',
   'port' => 443,
+  'secure' => true,
   'private_key' => '...',
   'publishable_key' => '...'
 ));
