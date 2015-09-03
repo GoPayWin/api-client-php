@@ -15,7 +15,7 @@ class Base extends \Exception
   }
 
   public function getResponseBody() {
-    return $body;
+    return $this->_body;
   }
 
 }
