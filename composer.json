@@ -1,19 +1,19 @@
 {
-  "name": "ziftr/api-client",
+  "name": "gopaywin/api-client",
   "description": "Ziftr API PHP Client Bindings",
   "keywords": [
-    "ziftr",
-    "ziftrpay",
+    "gopaywin",
+    "gopaywinpay",
     "ecommerce",
     "cryptocurrency",
     "api"
   ],
-  "homepage": "http://www.ziftr.com/",
+  "homepage": "http://www.gopaywin.com/",
   "license": "MIT",
   "authors": [
     {
-      "name": "Ziftr and contributors",
-      "homepage": "https://github.com/ziftr/fpa-php/contributors"
+      "name": "GoPayWin and contributors",
+      "homepage": "https://github.com/gopaywin/api-client-php/contributors"
     }
   ],
   "require": {
@@ -21,7 +21,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Ziftr\\": "lib"
+      "GoPayWin\\": "lib"
     }
   }
 }
