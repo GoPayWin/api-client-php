@@ -45,6 +45,6 @@ $response = $request->get();
 
 ## Links
 
-* [GoPayWin API Client for PHP on Github](http://github.com/gopaywin/gopaywin-api-client-php/)
+* [GoPayWin API Client for PHP on Github](http://github.com/gopaywin/api-client-php/)
 * [GoPayWin API Client on Packagist](https://packagist.org/packages/gopaywin/api-client/)
 * [GoPayWin website](http://www.gopaywin.com/)
