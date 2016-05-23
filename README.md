@@ -11,7 +11,7 @@ The GoPayWin API Client can be installed via [Composer](http://getcomposer.org) 
 ```json
 {
     "require": {
-        "gopaywin/api-client": "0.1.*@dev"
+        "gopaywin/api-client": "0.2.*@dev"
     }
 }
 ```
