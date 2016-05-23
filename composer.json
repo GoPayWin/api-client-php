@@ -1,11 +1,12 @@
 {
   "name": "gopaywin/api-client",
-  "description": "Ziftr API PHP Client Bindings",
+  "description": "GoPayWin API PHP Client Bindings",
   "keywords": [
     "gopaywin",
     "gopaywinpay",
     "ecommerce",
     "cryptocurrency",
+    "creditcard",
     "api"
   ],
   "homepage": "http://www.gopaywin.com/",

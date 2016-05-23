@@ -1,12 +1,12 @@
 <?php
 
-namespace Ziftr\ApiClient;
+namespace GoPayWin\ApiClient;
 
 class Request
 {
 
   const API_VERSION = '0.1';
-  const CLIENT_VERSION = '0.1.0a';
+  const CLIENT_VERSION = '0.2.0a';
 
   private $_path;
   private $_Configuration;
@@ -51,13 +51,9 @@ class Request
 
     // Setup the initial request
 
-    $port = $this->_Configuration->read('port');
-    $host = $this->_Configuration->read('host') . ':' . $port;
-    $secure = $this->_Configuration->read('secure');
+    $endpoint = $this->_Configuration->read('endpoint');
 
-    $protocol = $this->_secure ? 'https' : 'http';
-
-    $url = $protocol . '://' . $host . $this->_path;
+    $url = $endpoint . $this->_path;
 
     curl_setopt($ch, CURLOPT_URL,            $url);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST,  $method);
@@ -78,7 +74,7 @@ class Request
       'Authorization: Basic '. base64_encode($pubkey.':'.$signature),
       'Accept: application/vnd.ziftr.fpa-' . $acceptVersion . '+json',
       'Content-Type: application/json',
-      'User-Agent: Ziftr%20API%20PHP%20Client%20' . self::CLIENT_VERSION
+      'User-Agent: GoPayWin%20API%20PHP%20Client%20' . self::CLIENT_VERSION
     );
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);

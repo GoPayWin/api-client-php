@@ -11,12 +11,10 @@ include('../vendor/autoload.php');
  * Make sure to replace the keys with your own.
  */
 
-$configuration = new \Ziftr\ApiClient\Configuration();
+$configuration = new \GoPayWin\ApiClient\Configuration();
 
 $configuration->load_from_array(array(
-  'host' => 'sandbox.fpa.bz',
-  'port' => 443,
-  'secure' => true,
+  'endpoint' => \GoPayWin\ApiClient\Configuration::SANDBOX_ENDPOINT,
   'private_key' => '...',
   'publishable_key' => '...'
 ));
@@ -25,7 +23,7 @@ $configuration->load_from_array(array(
  * Create a new order request.
  */
 
-$order = new \Ziftr\ApiClient\Request('/orders/', $configuration);
+$order = new \GoPayWin\ApiClient\Request('/orders/', $configuration);
 
 try {
 
@@ -60,7 +58,7 @@ try {
   $itemsReq->post(array(
     'order_item' => array(
       'name' => 'Test Item',
-      'price' => 100,
+      'price' => 1000,
       'quantity' => 1,
       'currency_code' => 'USD'
     )
@@ -69,4 +67,5 @@ try {
   print_r($itemsReq->getResponse());
 
 } catch( Exception $e ) {
+  echo 'Error: ' . $e->getMessage();
 }

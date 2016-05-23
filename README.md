@@ -27,9 +27,7 @@ php composer.phar update
 $configuration = new \GoPayWin\ApiClient\Configuration();
 
 $configuration->load_from_array(array(
-  'host' => 'sandbox.fpa.bz',
-  'port' => 443,
-  'secure' => true,
+  'endpoint' => \GoPayWin\ApiClient\Configuration::SANDBOX_ENDPOINT,
   'private_key' => '...',
   'publishable_key' => '...'
 ));

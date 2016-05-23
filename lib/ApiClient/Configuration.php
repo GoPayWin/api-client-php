@@ -1,9 +1,12 @@
 <?php
 
-namespace Ziftr\ApiClient;
+namespace GoPayWin\ApiClient;
 
 class Configuration
 {
+  const SANDBOX_ENDPOINT = 'https://sandbox.fpa.bz';
+  const LIVE_ENDPOINT = 'https://api.fpa.bz';
+
   private $_settings = array();
 
   public function load_from_array( $new_settings ) {
