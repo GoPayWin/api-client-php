@@ -11,6 +11,10 @@ class Base extends \Exception
     $this->_Configuration = $Configuration;
     $this->_body          = $body;
 
+    if ( !$message && !empty($body->error->message) ) {
+      $message = $body->error->message . ' (' . $code . ')';
+    }
+
     parent::__construct($message, $code, $previous);
   }
 
