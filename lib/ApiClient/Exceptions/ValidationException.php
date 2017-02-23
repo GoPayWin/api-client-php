@@ -10,7 +10,7 @@ class ValidationException extends Base
   }
 
   public function getFields() {
-    return isset($this->_body->error->fields) ? $this->_body->fields : new StdClass();
+    return isset($this->_body->error->fields) ? $this->_body->error->fields : new StdClass();
   }
 
   public function getField($field) {
